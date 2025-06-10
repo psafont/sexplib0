@@ -178,7 +178,7 @@ val sexp_of_hashtbl : ('a -> Sexp.t) -> ('b -> Sexp.t) -> ('a, 'b) Hashtbl.t -> 
 
 (** [sexp_of_opaque x] converts the value [x] of opaque type to an S-expression. This
     means the user need not provide converters, but the result cannot be interpreted. *)
-val sexp_of_opaque : local_ 'a @ contended -> Sexp.t
+val sexp_of_opaque : ('a : value_or_null). local_ 'a @ contended -> Sexp.t
 
 (** [sexp_of_fun f] converts the value [f] of function type to a dummy S-expression.
     Functions cannot be serialized as S-expressions, but at least a placeholder can be
@@ -317,7 +317,7 @@ val printexc_prefer_sexp : exn -> string
     converter is found, [None] is returned instead. *)
 val sexp_of_exn_opt : exn -> Sexp.t option
 
-module (Exn_converter @ nonportable) : sig
+module (Exn_converter @@ nonportable) : sig
   (** [add constructor sexp_of_exn] registers exception S-expression converter
       [sexp_of_exn] for exceptions with the given [constructor].
 
