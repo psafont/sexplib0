@@ -162,6 +162,10 @@ val sexp_of_array__local : ('a -> Sexp.t) -> 'a array -> Sexp.t
     S-expressions. *)
 val sexp_of_hashtbl : ('a -> Sexp.t) -> ('b -> Sexp.t) -> ('a, 'b) Hashtbl.t -> Sexp.t
 
+(** [sexp_of_seq conv seq] converts the value [seq] of type ['a seq] to an S-expression.
+    Uses [conv] to convert values of type ['a] to an S-expression. *)
+val sexp_of_seq : ('a -> Sexp.t) -> 'a Seq.t -> Sexp.t
+
 (** [sexp_of_opaque x] converts the value [x] of opaque type to an S-expression. This
     means the user need not provide converters, but the result cannot be interpreted. *)
 val sexp_of_opaque : 'a -> Sexp.t
@@ -268,6 +272,11 @@ val array_of_sexp : (Sexp.t -> 'a) -> Sexp.t -> 'a array
     S-expression to hashtable key of type ['a], and function [conv_value], which converts
     an S-expression to hashtable value of type ['b]. *)
 val hashtbl_of_sexp : (Sexp.t -> 'a) -> (Sexp.t -> 'b) -> Sexp.t -> ('a, 'b) Hashtbl.t
+
+(** [seq_of_sexp conv sexp] converts S-expression [sexp] to a value of type ['a seq]
+    using conversion function [conv], which converts an S-expression to a value of type
+    ['a]. *)
+val seq_of_sexp : (Sexp.t -> 'a) -> Sexp.t -> 'a Seq.t
 
 (** [opaque_of_sexp sexp]
     @raise Of_sexp_error when attempting to convert an S-expression to an opaque value. *)

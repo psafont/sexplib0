@@ -192,6 +192,8 @@ let sexp_of_hashtbl sexp_of_key sexp_of_val htbl =
   List (Hashtbl.fold htbl ~init:[] ~f:coll)
 ;;
 
+let sexp_of_seq sexp_of__a seq = List (List.of_seq (Seq.map seq sexp_of__a))
+
 let sexp_of_opaque _ = Atom "<opaque>"
 let sexp_of_fun _ = Atom "<fun>"
 
@@ -492,6 +494,11 @@ let hashtbl_of_sexp key_of_sexp val_of_sexp sexp =
     htbl
   | Atom _ -> of_sexp_error "hashtbl_of_sexp: list needed" sexp
 ;;
+
+let seq_of_sexp a__of_sexp sexp =
+  match sexp with
+  | List lst -> Seq.map a__of_sexp (List.to_seq lst)
+  | Atom _ -> of_sexp_error "seq_of_sexp: list needed" sexp
 
 let opaque_of_sexp sexp =
   of_sexp_error "opaque_of_sexp: cannot convert opaque values" sexp
